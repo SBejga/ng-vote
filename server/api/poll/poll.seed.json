@@ -1,0 +1,81 @@
+[
+	{
+		"question": "Answer for the universe and everything else",
+  		"active": false,
+		"closed": false,
+		"choices": [
+			{
+				"text": "7",
+				"votes": [
+					{
+						"user": "Schneiderlein",
+						"fingerprint": "seven"
+					}
+				]
+			},
+			{
+				"text": "42",
+				"votes": [
+					{
+						"user": "Sebastian",
+						"fingerprint": "sb"
+					}
+				]
+			}
+		]
+	},
+	{
+		"question": "Wohin führen alle Straßen?",
+		"active": true,
+		"closed": false,
+		"choices": [
+			{
+				"text": "nach Rom",
+				"votes": [
+					{
+						"user": "Schneiderlein",
+						"fingerprint": "seven"
+					}
+				]
+			},
+			{
+				"text": "nach Stuttgart",
+				"votes": [
+					{
+						"user": "Sebastian",
+						"fingerprint": "sb"
+					}
+				]
+			}
+		]
+	},
+	{
+		"question": "Best Backend Technology",
+		"active": true,
+		"closed": true,
+		"choices": [
+			{
+				"text": "Java",
+				"votes": [
+					{
+						"user": "Schneiderlein",
+						"fingerprint": "seven"
+					}
+				]
+			},
+			{
+				"text": "Node.js",
+				"votes": [
+					{
+						"user": "Sebastian",
+						"fingerprint": "sb"
+					},
+					{
+						"user": "Darth Vader",
+						"fingerprint": "dv"
+					}
+				]
+			}
+		]
+	}
+]
