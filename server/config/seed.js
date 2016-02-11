@@ -5,8 +5,17 @@
 
 'use strict';
 
+var Poll = require('../api/poll/poll.model');
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+
+// Insert seed data below
+var pollSeed = require('../api/poll/poll.seed.json');
+
+// Insert seed inserts below
+Poll.find({}).remove(function() {
+  Poll.create(pollSeed);
+});
 
 Thing.find({}).remove(function() {
   Thing.create({
