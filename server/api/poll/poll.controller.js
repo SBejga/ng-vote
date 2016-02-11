@@ -54,6 +54,50 @@ exports.destroy = function(req, res) {
   });
 };
 
+/**
+ * Insert Vote into Poll.choices.votes
+ *
+ * @param req with params.pollid and body { choiceid: "", fingerprint: "" }
+ * @param res
+ */
+exports.vote = function (req, res) {
+  var pollid = req.params.id;
+  var choiceid = req.body.choiceid;
+  var fingerprint = req.body.fingerprint;
+
+  //ensure fingerprint
+  if (fingerprint === undefined || fingerprint === null || fingerprint === "") {
+    return res.status(400).send('No client id');
+  }
+
+  Poll.findById(pollid, function (err, poll) {
+    if(err) { return handleError(res, err); }
+    if(!poll) { return res.status(404).send('Not Found'); }
+
+    //check if already voted
+    for (var c in poll.choices) {
+      var curChoice = poll.choices[c];
+      for (var v in curChoice.votes) {
+        var curVote = curChoice.votes[v];
+        if (curVote.fingerprint === fingerprint) {
+          return res.status(400).send('already voted for poll');
+        }
+      }
+    }
+
+    var choice = poll.choices.id(choiceid);
+    choice.votes.push({ fingerprint: fingerprint });
+
+    poll.save(function(err, doc) {
+      if (err) {
+        return handleError(res, err);
+      }
+
+      return res.status(200).json(doc);
+    });
+  });
+};
+
 function handleError(res, err) {
   return res.status(500).send(err);
 }
