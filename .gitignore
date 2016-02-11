@@ -1,3 +1,6 @@
+# webstorm IDE
+.idea
+
 # Logs
 logs
 *.log
@@ -26,8 +29,14 @@ build/Release
 # Dependency directory
 node_modules
 
+# bower
+client/bower_components
+
 # Optional npm cache directory
 .npm
 
 # Optional REPL history
 .node_repl_history
+
+# local env settings
+server/config/local.env.js
