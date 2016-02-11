@@ -1,0 +1,93 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container" ng-hide="isLoading">
+  <!-- hide not yet activated if poll activated -->
+  <div ng-hide="poll.active" class="well well-lg" style="background-color: lightgoldenrodyellow;">
+    <strong>Poll is not yet activated</strong>
+    <div ng-show="isAuthToken()">
+      <input type="password" ng-model="activationPassword"> <button ng-click="activatePoll()">Activate</button>
+      <p style="color: red;" ng-show="activationError">{{activationError}}</p>
+    </div>
+    <div ng-hide="isAuthToken()">
+      <strong>Wait until voting will be enabled.</strong>
+    </div>
+  </div>
+
+  <!-- show when nowActivated is true -->
+  <div ng-show="nowActivated">
+    <div class="well well-lg" style="background-color: lightgreen;">
+      Poll activated. You can vote now :-)
+    </div>
+  </div>
+
+  <!-- show when poll is closed -->
+  <div ng-show="poll.closed">
+    <div class="well well-lg" style="background-color: lightcoral;">
+      Poll closed. No more votes accepted.
+    </div>
+  </div>
+
+  <!-- hide vote options if closed or already voted -->
+  <div ng-hide="poll.closed || alreadyVoted">
+    <h3>{{poll.question}}</h3>
+
+    <p class="lead">Please select one of the following options:</p>
+
+    <form role="form" ng-submit="vote()">
+      <div ng-repeat="choice in poll.choices" class="radio">
+        <input type="radio" id="choice{{$index}}" name="choice" value="{{choice._id}}" ng-model="poll.uservote">
+        <label for="choice{{$index}}">
+          {{choice.text}}
+        </label>
+      </div>
+      <p><hr></p>
+      <button class="btn btn-block btn-primary" type="submit" ng-disabled="alreadyVoted">Vote &raquo;</button>
+
+    </form>
+  </div>
+
+  <!-- show poll result if poll closed or already voted -->
+  <div ng-show="poll.closed || alreadyVoted">
+    <h3>{{poll.question}}</h3>
+
+    <table class="result-table">
+      <tr ng-repeat="choice in poll.choices">
+        <td>{{choice.text}}</td>
+        <td>
+          <table style="background-color: lightblue; width: {{choice.votes.length/poll.totalVotes*100}}%; text-align: right">
+            <tr><td>{{choice.votes.length}}</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <p>
+      <em>
+        {{poll.totalVotes}} votes counted so far.
+        <span ng-show="userVotedFor.text">You voted for <strong>{{userVotedFor.text}}</strong>.</span>
+      </em>
+    </p>
+
+    <p><hr></p>
+    <!--
+    <p><a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Poll List</a></p>
+    -->
+  </div>
+</div>
+
+<div class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <p class="navbar-text"><app-name></app-name> v<app-version></app-version></p>
+      <p class="navbar-text">{{fingerprint}}</p>
+
+      <ul ng-show="isAdmin() && !isLoading" class="nav navbar-nav navbar-right">
+        <li ng-hide="poll.active" ng-click="setPollActive(true)"><a>Activate</a></li>
+        <li ng-show="poll.active" ng-click="setPollActive(false)"><a>Deactivate</a></li>
+        <li ng-hide="poll.closed" ng-click="setPollClosed(true)"><a>Close</a></li>
+        <li ng-show="poll.closed" ng-click="setPollClosed(false)"><a>Open</a></li>
+
+      </ul>
+    </div>
+  </div>
+</div>

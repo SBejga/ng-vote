@@ -62,6 +62,34 @@ angular.module('ngvoteApp')
       },
 
       /**
+       * Register listeners to sync an array with updates on a model
+       *
+       * Takes the array we want to sync, the model name that socket updates are sent from,
+       * and an optional callback function after new items are updated.
+       *
+       * @param {String} modelName
+       * @param {Object} document
+       * @param {Function} cb
+       */
+      registerUpdates: function (modelName, cb) {
+        cb = cb || angular.noop;
+
+        socket.on(modelName + ':save', function (item) {
+          var event = 'updated';
+          cb(event, item);
+        });
+
+        /**
+         * Syncs removed items on 'model:remove'
+         */
+        socket.on(modelName + ':remove', function (item) {
+          var event = 'deleted';
+          _.remove(array, {_id: item._id});
+          cb(event, item, array);
+        });
+      },
+
+      /**
        * Removes listeners for a models updates on the socket
        *
        * @param modelName

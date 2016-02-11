@@ -4,13 +4,13 @@ angular.module('ngvoteApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [
       {
-        'title': 'Home',
-        'link': '/'
-      },
-      {
         'title': 'Polls',
-        'link': '/polls'
+        'link': '/'
       }
+      //{
+      //  'title': 'Home',
+      //  'link': '/main'
+      //}
     ];
 
     $scope.isCollapsed = true;
